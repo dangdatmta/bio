@@ -95,13 +95,36 @@
         });
     }
 
-    // Copy USDT address to clipboard
-    function initCopyButton() {
+    // USDT Network selector and copy functionality
+    function initUSDTSelector() {
+        const networkSelect = document.getElementById('usdt-network-select');
+        const qrImage = document.getElementById('usdt-qr-image');
         const copyButton = document.getElementById('usdt-copy-button');
-        if (!copyButton) return;
 
+        if (!networkSelect || !qrImage || !copyButton) return;
+
+        // Get current address from selected option
+        function getCurrentAddress() {
+            const selectedOption = networkSelect.options[networkSelect.selectedIndex];
+            return selectedOption.dataset.address;
+        }
+
+        // Update QR image when network changes
+        networkSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const newQR = selectedOption.dataset.qr;
+
+            // Fade transition for QR image
+            qrImage.style.opacity = '0.5';
+            qrImage.src = newQR;
+            qrImage.onload = function () {
+                qrImage.style.opacity = '1';
+            };
+        });
+
+        // Copy address to clipboard
         copyButton.addEventListener('click', async function () {
-            const address = this.dataset.address;
+            const address = getCurrentAddress();
             const span = this.querySelector('span');
             const originalText = span.textContent;
 
@@ -123,6 +146,48 @@
         });
     }
 
+    // QR Code Modal Zoom
+    function initQRModal() {
+        const modal = document.getElementById('qr-modal');
+        const modalImage = document.getElementById('qr-modal-image');
+        const closeButton = modal?.querySelector('.modal-close');
+        const qrImages = document.querySelectorAll('.coffee-qr');
+
+        if (!modal || !modalImage || !qrImages.length) return;
+
+        // Open modal when clicking QR
+        qrImages.forEach(qr => {
+            qr.addEventListener('click', function () {
+                modalImage.src = this.src;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on button click
+        closeButton?.addEventListener('click', closeModal);
+
+        // Close on backdrop click
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
@@ -133,7 +198,8 @@
     function init() {
         initTypingAnimation();
         initFadeIn();
-        initCopyButton();
+        initUSDTSelector();
+        initQRModal();
         // Defer parallax to not block initial load
         requestAnimationFrame(initParallax);
     }

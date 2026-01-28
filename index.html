@@ -179,7 +179,7 @@
                 <h2 class="coffee-title">☕ Buy Me a Coffee</h2>
                 <div class="donate-columns">
                     <div class="donate-column">
-                        <img src="assets/images/QR.png" alt="QR Code for Bank Transfer" class="coffee-qr" width="120"
+                        <img src="assets/images/QR.jpg" alt="QR Code for Bank Transfer" class="coffee-qr" width="120"
                             height="120" loading="lazy">
                         <a href="https://paypal.me/datdq599" target="_blank" rel="noopener noreferrer"
                             class="coffee-button paypal">
@@ -192,10 +192,20 @@
                         </a>
                     </div>
                     <div class="donate-column">
-                        <img src="assets/images/QR_USDT.png" alt="QR Code for USDT" class="coffee-qr" width="120"
-                            height="120" loading="lazy">
-                        <button id="usdt-copy-button" class="coffee-button usdt"
-                            data-address="0x10746732AFd5FD4D771dF5e1910ac480E84c6085" type="button">
+                        <img id="usdt-qr-image" src="assets/images/QR_TRC20.jpg" alt="QR Code for USDT"
+                            class="coffee-qr" width="120" height="120" loading="lazy">
+                        <select id="usdt-network-select" class="network-select" aria-label="Select USDT Network">
+                            <option value="TRC20" data-address="TBGVPgdbAfi8XdcgWswx5j59B21FPiv1x2"
+                                data-qr="assets/images/QR_TRC20.jpg">TRC20</option>
+                            <option value="ERC20" data-address="0x8f44a92ba41974c3214e3b4ecfd8fc0426e1de48"
+                                data-qr="assets/images/QR_ERC20.jpg">ERC20</option>
+                            <option value="APTOS"
+                                data-address="0xa90b38683baeae5d99ed7e307576bc16c3e0cfff96f52c5be26a781cb60ffb5d"
+                                data-qr="assets/images/QR_APTOS.jpg">APTOS</option>
+                            <option value="SOLANA" data-address="CMrEPGtboYFNWcNyoQDHzbit9nnEnT3rtoEXYmgEjgQk"
+                                data-qr="assets/images/QR_SOLANA.jpg">SOLANA</option>
+                        </select>
+                        <button id="usdt-copy-button" class="coffee-button usdt" type="button">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 aria-hidden="true" focusable="false">
                                 <rect x="9" y="9" width="13" height="13" rx="2" />
@@ -208,6 +218,12 @@
             </article>
         </div>
     </main>
+
+    <!-- QR Zoom Modal -->
+    <div id="qr-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="QR Code Preview">
+        <button class="modal-close" aria-label="Close modal">&times;</button>
+        <img id="qr-modal-image" src="" alt="QR Code Enlarged" class="modal-content">
+    </div>
 
     <!-- Defer non-critical JS -->
     <script src="script.js" defer></script>
